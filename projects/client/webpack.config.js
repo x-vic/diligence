@@ -1,3 +1,4 @@
+const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { resolve } = require('path')
 const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
@@ -10,10 +11,20 @@ module.exports = {
   entry: {
     main: [
       // 'webpack-plugin-serve/client',
-      resolve(__dirname, './src/index.tsx'),
+      resolve(__dirname, './src/main.tsx'),
     ],
   },
   mode: 'development',
+  devtool: isDev ? 'cheap-source-map' : 'hidden-source-map',
+  cache: {
+    type: 'filesystem',
+    allowCollectingMemory: true,
+  },
+  stats: isDev ? 'summary' : { assets: true },
+  // 监控包体积，过大报错
+  // performance: {
+  //   hints: 'error',
+  // },
   module: {
     rules: [
       {
@@ -42,7 +53,9 @@ module.exports = {
     ],
   },
   devServer: {
-    client: { overlay: false },
+    // 支持 history 路由
+    historyApiFallback: true,
+    client: { overlay: { errors: true, warnings: false } },
     static: {
       directory: resolve(__dirname, './dist'),
     },
@@ -52,6 +65,31 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.ts', '.tsx'],
   },
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+      cacheGroups: {
+        vendors: {
+          name: 'chunk-vendors',
+          test: /[/]node_modules[/]/,
+          priority: 10,
+          chunks: 'initial',
+        },
+        react: {
+          name: 'chunk-react',
+          priority: 20,
+          test: /[/]node_modules[/]_?react(.*)/,
+        },
+        commons: {
+          name: 'chunk-commons',
+          minChunks: 2,
+          priority: 5,
+          chunks: 'initial',
+          reuseExistingChunk: true,
+        },
+      },
+    },
+  },
   plugins: [
     isDev && new ReactRefreshPlugin(),
     new ForkTsCheckerWebpackPlugin(),
@@ -59,6 +97,7 @@ module.exports = {
       template: resolve(__dirname, './public/template.html'),
       filename: './index.html',
     }),
+    // new webpack.ProgressPlugin(console.info),
   ].filter(Boolean),
   output: {
     path: resolve(__dirname, 'dist'),
