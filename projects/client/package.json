@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "webpack serve --hot --progress",
     "build": "cross-env NODE_ENV=production webpack"
@@ -37,6 +38,7 @@
   "dependencies": {
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
-    "react-router-dom": "^6.3.0"
+    "react-router-dom": "^6.3.0",
+    "storage": "workspace:^1.0.0"
   }
 }

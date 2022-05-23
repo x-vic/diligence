@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { BrowserRouter, useNavigate, useRoutes } from 'react-router-dom'
 import { App } from '../App'
+import Admin from '../modules/Admin'
 import Settings from '../modules/Settings'
 import Task from '../modules/Task'
 
@@ -21,6 +22,10 @@ function RouterTree() {
     {
       path: 'tasks',
       element: <Task />,
+    },
+    {
+      path: 'admin',
+      element: <Admin />,
     },
     {
       path: 'settings',
