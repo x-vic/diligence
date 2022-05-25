@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "pnpm -C ./projects/client start"
+    "start": "pnpm -C ./projects/client start",
+    "build:client": "pnpm -C ./projects/client build"
   },
   "keywords": [],
   "author": "",

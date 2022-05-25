@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { resolve } = require('path')
 const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 const isDev = process.env.NODE_ENV !== 'production'
 
@@ -91,8 +92,10 @@ module.exports = {
     },
   },
   plugins: [
+    !isDev && new CleanWebpackPlugin(),
     isDev && new ReactRefreshPlugin(),
     new ForkTsCheckerWebpackPlugin(),
+    new webpack.ProgressPlugin(),
     new HtmlWebpackPlugin({
       template: resolve(__dirname, './public/template.html'),
       filename: './index.html',
@@ -101,7 +104,7 @@ module.exports = {
   ].filter(Boolean),
   output: {
     path: resolve(__dirname, 'dist'),
-    filename: 'bundle.[name].js',
+    filename: '[name].[contenthash:5].js',
     publicPath: '/',
   },
 }
