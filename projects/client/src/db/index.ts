@@ -57,7 +57,6 @@ export const addGroups = async (data: Group) => {
     const res = await findById(ObjectStores.groupSequences, 0)
     // @ts-ignore
     res.sequences.push(groupId)
-    console.log('res', res)
     await update(ObjectStores.groupSequences, res)
   }
 }

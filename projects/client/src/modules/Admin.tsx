@@ -2,7 +2,6 @@ import React, { useCallback, useState } from 'react'
 import { Group } from '../domain/Group'
 import { readFileAsText } from '../utils'
 
-import { ObjectStores, readAll } from 'storage'
 import { addGroups } from '../db'
 
 // readAll(ObjectStores.groupSequences)
@@ -15,10 +14,10 @@ export default function Admin() {
     setFile(file)
     const res = await readFileAsText(file)
     const group = Group.fromJson(file.name.split('.')?.[0] ?? 'unnamed', res)
-    console.log('group', group)
+    // console.log('group', group)
     setFile(null)
-    addGroups(group)
     // todo 存入本地数据库 1. 给组生成 id； 2. 生成笔记； 3. 建立 组 ID ==> [笔记 id] 的关联
+    addGroups(group)
   }, [])
   return (
     <main className="flex flex-col items-center">
