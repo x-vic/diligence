@@ -1,0 +1,38 @@
+{
+  "groupSequences": [
+    {
+      "id": 0,
+      "name": "groupSequences",
+      "sequences": [0]
+    }
+  ],
+  "groups": [
+    {
+      "id": 0,
+      "name": "vic",
+      "notesIndex": [0, 1]
+    }
+  ],
+  "notes": [
+    {
+      "completed": false,
+      "degree": 0,
+      "progress": false,
+      "created": 1653462762626,
+      "remark": [],
+      "title": "标题",
+      "content": "内容",
+      "id": 0
+    },
+    {
+      "completed": false,
+      "degree": 1,
+      "progress": true,
+      "created": 1653462762626,
+      "remark": ["xdfghjn"],
+      "title": "标题2",
+      "content": "内容2",
+      "id": 1
+    }
+  ]
+}

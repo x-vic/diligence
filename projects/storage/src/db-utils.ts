@@ -83,8 +83,8 @@ export const readAll = (name: ObjectStores) =>
   new Promise((resolve, reject) => {
     const store = db.transaction(name).objectStore(name)
     const result = store.openCursor()
+    const res = []
     result.onsuccess = (event) => {
-      const res = []
       const cursor = event.target.result
       if (cursor) {
         res.push(cursor.value)

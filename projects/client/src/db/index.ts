@@ -5,6 +5,7 @@ import {
   getLastIndex,
   init,
   ObjectStores,
+  readAll,
   update,
 } from 'storage'
 import { Group } from '../domain/Group'
@@ -59,4 +60,18 @@ export const addGroups = async (data: Group) => {
     res.sequences.push(groupId)
     await update(ObjectStores.groupSequences, res)
   }
+}
+
+// 读取数据库中的所有数据，整理成 JSON 对象
+export const exportAll = async () => {
+  // @ts-ignore
+  const groupSequences = await readAll(ObjectStores.groupSequences)
+  const groups = await readAll(ObjectStores.groups)
+  const notes = await readAll(ObjectStores.notes)
+  const res = {
+    groupSequences,
+    groups,
+    notes,
+  }
+  return res
 }
