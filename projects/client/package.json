@@ -41,6 +41,7 @@
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-router-dom": "^6.3.0",
-    "storage": "workspace:^1.0.0"
+    "storage": "workspace:^1.0.0",
+    "vicui": "workspace:^1.0.0"
   }
 }

@@ -1,0 +1,49 @@
+.#{$prefix}toast {
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgb(115 115 115 / 0.4);
+
+  &-content {
+    height: 36px;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(129 140 248);
+    color: rgb(245 245 245);
+
+    & span {
+      position: absolute;
+      right: 0px;
+      height: 36px;
+      width: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      color: rgb(250 250 250);
+    }
+  }
+
+  gray-400 {
+    background-color: #9ca3af;
+  }
+
+  indigo-400 {
+    background-color: #818cf8;
+  }
+
+  yellow-400 {
+    background-color: #fbbf24;
+  }
+
+  red-400 {
+    background-color: #f87171;
+  }
+}

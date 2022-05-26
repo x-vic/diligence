@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "lib": ["ESNext", "DOM"],
+    "module": "ESNext",
+    "target": "ESNext",
+    "sourceMap": true,
+    "outDir": "./lib",
+    "declaration": true, // 生成定义文件
+    "declarationMap": false, // 生成定义sourceMap
+    "declarationDir": "./lib/types", // 定义文件输出目录
+    // 下面这两个选项用来解决打包 async 函数出错的问题
+    "baseUrl": ".",
+    "moduleResolution": "node",
+    // "allowSyntheticDefaultImports": true,
+    // "downlevelIteration": true,
+    "paths": {
+      "tslib": ["node_modules/tslib/tslib.d.ts"],
+      "@/*": ["src/*"]
+    },
+    "jsx": "react"
+  },
+  "include": [
+    "src/*" // 导入目录
+  ],
+  "exclude": ["src/**/*.test.tsx"]
+}

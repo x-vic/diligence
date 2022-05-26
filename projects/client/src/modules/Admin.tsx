@@ -3,9 +3,9 @@ import { Group } from '../domain/Group'
 import { download, readFileAsText, textToFile } from '../utils'
 
 import { addGroups, exportAll } from '../db'
-import Toast, { ToastTypes } from '../components/toast/Toast'
-import { useToast } from '../components/toast'
-import Dialog, { useDialog } from '../components/dialog'
+import { ToastTypes, useDialog, useToast } from 'vicui'
+import 'vicui/dist/index.css'
+// import { useDialog } from '../components/dialog'
 
 export default function Admin() {
   const [file, setFile] = useState(null)
