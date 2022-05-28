@@ -8,3 +8,10 @@ export enum ObjectStores {
   // 存储所有的笔记
   notes = 'notes',
 }
+
+export enum DbStatus {
+  success,
+  update,
+  error,
+  unknow,
+}

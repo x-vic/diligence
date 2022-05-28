@@ -71,10 +71,13 @@ importers:
   projects/storage:
     specifiers:
       '@rollup/plugin-node-resolve': ^13.3.0
+      dexie: ^2.0.4
       rollup: ^2.74.1
       rollup-plugin-typescript2: ^0.31.2
       tslib: ^2.4.0
       typescript: ^4.6.4
+    dependencies:
+      dexie: 2.0.4
     devDependencies:
       '@rollup/plugin-node-resolve': 13.3.0_rollup@2.74.1
       rollup: 2.74.1
@@ -2704,6 +2707,11 @@ packages:
       defined: 1.0.0
       minimist: 1.2.6
     dev: true
+
+  /dexie/2.0.4:
+    resolution: {integrity: sha512-aQ/s1U2wHxwBKRrt2Z/mwFNHMQWhESerFsMYzE+5P5OsIe5o1kgpFMWkzKTtkvkyyEni6mWr/T4HUJuY9xIHLA==}
+    engines: {node: '>=6.0'}
+    dev: false
 
   /didyoumean/1.2.2:
     resolution: {integrity: sha512-gxtyfqMg7GKyhQmb056K7M3xszy/myH8w+B4RT+QXBQsvAOdc3XymqDDPHx1BgPgsdAA5SIifona89YtRATDzw==}

@@ -14,11 +14,11 @@ export interface DialogParams {
 
 const DialogContainer = document.createElement('div')
 
-export const useDialog = (DialogProps: DialogParams) => {
+export const useDialog = () => {
   let root: Root
   const resolveRef = useRef(null)
   const rejectRef = useRef(null)
-  const show = () =>
+  const show = (DialogProps: DialogParams) =>
     new Promise((resolve, reject) => {
       root = createRoot(DialogContainer)
       root.render(

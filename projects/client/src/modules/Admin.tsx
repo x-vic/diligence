@@ -2,43 +2,29 @@ import React, { useCallback, useState } from 'react'
 import { Group } from '../domain/Group'
 import { download, readFileAsText, textToFile } from '../utils'
 
-import { addGroups, exportAll } from '../db'
 import { ToastTypes, useDialog, useToast } from 'vicui'
 import 'vicui/dist/index.css'
-// import { useDialog } from '../components/dialog'
+import { addGroup, exportAll, recover } from 'storage'
 
 export default function Admin() {
-  const [file, setFile] = useState(null)
-  // const { show, hide } = useToast({
-  //   type: ToastTypes.success,
-  //   text: 'hello vic',
-  //   duration: 888888888,
-  // })
-  const { show } = useDialog({
-    title: '标题',
-    text: '内容。。。。。。。',
-  })
+  const [groupFile, setGroupFile] = useState(null)
+  const [recoverFile, setRecoverFile] = useState(null)
+  const { show: showToast } = useToast()
+  const { show: showDialog } = useDialog()
 
-  const handleDialog = () => {
-    show()
-      .then(() => {
-        console.log('确认')
-      })
-      .catch(() => {
-        console.log('取消')
-      })
-  }
-
-  const handleChange = useCallback(async (e) => {
+  const handleAddGroup = async (e) => {
     const file: File = e.target.files[0]
     if (!file) return
-    setFile(file)
+    setGroupFile(file)
     const res = await readFileAsText(file)
     const group = Group.fromJson(file.name.split('.')?.[0] ?? 'unnamed', res)
-    setFile(null)
+    // 手动清空 value 值，否则第二次不会出发 change 事件
+    e.target.value = null
+    setGroupFile(null)
     // todo 存入本地数据库 1. 给组生成 id； 2. 生成笔记； 3. 建立 组 ID ==> [笔记 id] 的关联
-    addGroups(group)
-  }, [])
+    addGroup(group.name, group.notes)
+  }
+
   // 导出数据为 JSON 文件
   const handleExport = useCallback(async () => {
     // 读取数据库中的所有数据，整理成 JSON 对象
@@ -46,12 +32,29 @@ export default function Admin() {
     const url = (await textToFile(json)) as string
     download(url)
   }, [])
-  // 恢复所有数据
-  const handleRecover = useCallback(async () => {
-    // toast.info('hehe', 2000, true)
-    handleDialog()
-    // setTimeout(hide, 1000)
-  }, [])
+
+  const handleRecover = async (e) => {
+    await showDialog({
+      title: '恢复数据',
+      text: '恢复数据之前会先清空现有数据，您确定吗？',
+    })
+    const file: File = e.target.files[0]
+    if (!file) return
+    setRecoverFile(file)
+    const jsonStr = await readFileAsText(file)
+    // 手动清空 value 值，否则第二次不会出发 change 事件
+    e.target.value = null
+    setRecoverFile(null)
+    const res = await recover(JSON.parse(jsonStr)).catch(() => false)
+    if (res) {
+      showToast({
+        type: ToastTypes.success,
+        text: '恢复数据成功',
+        duration: 2000,
+      })
+    }
+  }
+
   return (
     <main className="flex flex-col items-center">
       {/* 笔记组列表 */}
@@ -60,14 +63,14 @@ export default function Admin() {
         htmlFor="uploadId"
         className="w-11/12 h-[40px] leading-[40px] text-center bg-indigo-200 rounded-[20px] my-[8px]"
       >
-        上传文件{file?.name ? `（${file?.name}）` : ''}
+        上传文件{groupFile?.name ? `（${groupFile?.name}）` : ''}
       </label>
       <input
         id="uploadId"
         type="file"
         accept="application/docx,application/json"
         className="hidden"
-        onChange={handleChange}
+        onChange={handleAddGroup}
       />
       <button
         onClick={handleExport}
@@ -75,13 +78,26 @@ export default function Admin() {
       >
         导出数据
       </button>
-      <button
+      {/* <button
         onClick={handleRecover}
         className="w-11/12 h-[40px] leading-[40px] text-center bg-yellow-200 rounded-[20px] my-[8px]"
       >
         恢复数据
-      </button>
+      </button> */}
       {/* <Dialog text="heheh" hide={() => {}} /> */}
+      <label
+        htmlFor="recoverId"
+        className="w-11/12 h-[40px] leading-[40px] text-center bg-indigo-200 rounded-[20px] my-[8px]"
+      >
+        恢复数据
+      </label>
+      <input
+        id="recoverId"
+        type="file"
+        accept="application/docx,application/json"
+        className="hidden"
+        onChange={handleRecover}
+      />
     </main>
   )
 }

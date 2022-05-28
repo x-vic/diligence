@@ -14,10 +14,10 @@ export interface ToastParams {
 
 const toastContainer = document.createElement('div')
 
-export const useToast = (toastProps: ToastParams) => {
+export const useToast = () => {
   let root: Root
-  const { duration } = toastProps
-  const show = () => {
+  const show = (toastProps: ToastParams) => {
+    const { duration } = toastProps
     root = createRoot(toastContainer)
     root.render(<Toast {...toastProps} hide={hide} />)
     document.body.appendChild(toastContainer)

@@ -5,6 +5,7 @@
   "main": "lib/index.js",
   "type": "module",
   "module": "dist/index.js",
+  "typings": "dist/type/src/index.d.ts",
   "types": "dist/type/src/index.d.ts",
   "scripts": {
     "dev": "vite",

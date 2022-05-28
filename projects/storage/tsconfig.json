@@ -10,6 +10,7 @@
     "declarationDir": "./lib/types", // 定义文件输出目录
     // 下面这两个选项用来解决打包 async 函数出错的问题
     "baseUrl": ".",
+    "moduleResolution": "node",
     "paths": {
       "tslib": ["node_modules/tslib/tslib.d.ts"]
     },
