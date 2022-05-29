@@ -13,6 +13,7 @@ importers:
       '@pmmmwh/react-refresh-webpack-plugin': ^0.5.6
       '@types/react': ^18.0.9
       '@types/react-dom': ^18.0.4
+      '@xstate/react': ^3.0.0
       autoprefixer: ^10.4.7
       babel-loader: ^8.2.5
       classnames: ^2.3.1
@@ -36,13 +37,16 @@ importers:
       webpack: ^5.72.1
       webpack-cli: ^4.9.2
       webpack-dev-server: ^4.9.0
+      xstate: ^4.32.1
     dependencies:
+      '@xstate/react': 3.0.0_ds25dbl6ssacjrt3wvmav227dq
       classnames: 2.3.1
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
       react-router-dom: 6.3.0_ef5jwxihqo6n7gxfmzogljlgcm
       storage: link:../storage
       vicui: link:../vicui
+      xstate: 4.32.1
     devDependencies:
       '@babel/core': 7.18.0
       '@babel/preset-react': 7.17.12_@babel+core@7.18.0
@@ -67,6 +71,23 @@ importers:
       webpack: 5.72.1_webpack-cli@4.9.2
       webpack-cli: 4.9.2_cwh63z5eu3fmemh7flfnfpcp74
       webpack-dev-server: 4.9.0_smhu6mcfcg7aivfsuosc335k3u
+
+  projects/stateMachine:
+    specifiers:
+      '@rollup/plugin-node-resolve': ^13.3.0
+      rollup: ^2.74.1
+      rollup-plugin-typescript2: ^0.31.2
+      tslib: ^2.4.0
+      typescript: ^4.6.4
+      xstate: ^4.32.1
+    dependencies:
+      xstate: 4.32.1
+    devDependencies:
+      '@rollup/plugin-node-resolve': 13.3.0_rollup@2.74.1
+      rollup: 2.74.1
+      rollup-plugin-typescript2: 0.31.2_lq4dy2bb4fhoyaf2vwyb4geyfa
+      tslib: 2.4.0
+      typescript: 4.6.4
 
   projects/storage:
     specifiers:
@@ -1900,6 +1921,26 @@ packages:
       webpack-dev-server: 4.9.0_smhu6mcfcg7aivfsuosc335k3u
     dev: true
 
+  /@xstate/react/3.0.0_ds25dbl6ssacjrt3wvmav227dq:
+    resolution: {integrity: sha512-KHSCfwtb8gZ7QH2luihvmKYI+0lcdHQOmGNRUxUEs4zVgaJCyd8csCEmwPsudpliLdUmyxX2pzUBojFkINpotw==}
+    peerDependencies:
+      '@xstate/fsm': ^2.0.0
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      xstate: ^4.31.0
+    peerDependenciesMeta:
+      '@xstate/fsm':
+        optional: true
+      xstate:
+        optional: true
+    dependencies:
+      react: 18.1.0
+      use-isomorphic-layout-effect: 1.1.2_7cpxmzzodpxnolj5zcc5cr63ji
+      use-sync-external-store: 1.1.0_react@18.1.0
+      xstate: 4.32.1
+    transitivePeerDependencies:
+      - '@types/react'
+    dev: false
+
   /@xtuc/ieee754/1.2.0:
     resolution: {integrity: sha512-DX8nKgqcGwsc0eJSqYt5lwP4DH5FlHnmuWWBRy7X0NcaGR0ZtuyeESgMwTYVEtxmsNGY+qit4QYT/MIYTOTPeA==}
     dev: true
@@ -2378,7 +2419,7 @@ packages:
     dev: true
 
   /commondir/1.0.1:
-    resolution: {integrity: sha1-3dgA2gxmEnOTzKWVDqloo6rxJTs=}
+    resolution: {integrity: sha512-W9pAhw0ja1Edb5GVdIF1mjZw/ASI0AlShXM83UUGe2DVr5TdAPEA1OA8m/g8zWp9x6On7gqufY+FatDbC3MDQg==}
     dev: true
 
   /compressible/2.0.18:
@@ -5405,6 +5446,27 @@ packages:
       punycode: 2.1.1
     dev: true
 
+  /use-isomorphic-layout-effect/1.1.2_7cpxmzzodpxnolj5zcc5cr63ji:
+    resolution: {integrity: sha512-49L8yCO3iGT/ZF9QttjwLF/ZD9Iwto5LnH5LmEdk/6cFmXddqi2ulF0edxTwjj+7mqvpVVGQWvbXZdn32wRSHA==}
+    peerDependencies:
+      '@types/react': '*'
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+    dependencies:
+      '@types/react': 18.0.9
+      react: 18.1.0
+    dev: false
+
+  /use-sync-external-store/1.1.0_react@18.1.0:
+    resolution: {integrity: sha512-SEnieB2FPKEVne66NpXPd1Np4R1lTNKfjuy3XdIoPQKYBAFdzbzSZlSn1KJZUiihQLQC5Znot4SBz1EOTBwQAQ==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.1.0
+    dev: false
+
   /util-deprecate/1.0.2:
     resolution: {integrity: sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=}
     dev: true
@@ -5648,6 +5710,10 @@ packages:
       utf-8-validate:
         optional: true
     dev: true
+
+  /xstate/4.32.1:
+    resolution: {integrity: sha512-QYUd+3GkXZ8i6qdixnOn28bL3EvA++LONYL/EMWwKlFSh/hiLndJ8YTnz77FDs+JUXcwU7NZJg7qoezoRHc4GQ==}
+    dev: false
 
   /xtend/4.0.2:
     resolution: {integrity: sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==}

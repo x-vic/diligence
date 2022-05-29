@@ -3,7 +3,7 @@ import { BrowserRouter, useNavigate, useRoutes } from 'react-router-dom'
 import { App } from '../App'
 import Admin from '../modules/Admin'
 import Settings from '../modules/Settings'
-import Task from '../modules/Task'
+import Task from '../modules/tasks'
 
 export function Index() {
   return (

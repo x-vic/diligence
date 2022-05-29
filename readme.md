@@ -15,6 +15,6 @@
 - [ ] 静态文件处理
 - [ ] pwa 支持
 - [ ] rxjs
-- [ ] xstate
+- [x] xstate
 - [ ] webassembly
 - [ ] 学习数据图表化
