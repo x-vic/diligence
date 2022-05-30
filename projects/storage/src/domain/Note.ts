@@ -1,4 +1,4 @@
-interface INote {
+export interface INote {
   completed: boolean // 是否为简单知识
   degree: number // 掌握程度
   progress: boolean // 是否在进行中
@@ -10,21 +10,24 @@ interface INote {
   tags: string[]
   title: string
   content: string
+  groupName: string
 }
 
 export class Note implements INote {
-  public id: number
+  // public id: number
   public completed: boolean = false // 是否为简单知识
   public degree: number = 0 // 掌握程度
   public progress: boolean = false // 是否在进行中
   public created: number = Date.now() // 创建时间
   public lastReview: number // 上次复习时间
   public lastTimes: number // 上次是第几次
-  public errorTimes: number
+  public errorTimes: number = 0
+  public groupName: string
   public remark: string[] = [] // 标记 / 评论
   public tags: string[] = []
   constructor(public title: string, public content: string) {}
 
+  // 原始数据可能有很多缺失，这里可以补齐
   static fromJsonObj({
     title,
     content,
@@ -35,9 +38,10 @@ export class Note implements INote {
     lastReview,
     lastTimes,
     errorTimes,
+    groupName,
     remark,
     tags,
-  }: INote): Note {
+  }: Partial<INote>): Note {
     const note = new Note(title, content)
     completed && (note.completed = completed)
     degree && (note.degree = degree)
@@ -46,6 +50,7 @@ export class Note implements INote {
     lastTimes && (note.created = lastTimes)
     errorTimes && (note.created = errorTimes)
     created && (note.created = created)
+    groupName && (note.created = created)
     if (remark) {
       const remarks = Array.isArray(remark) ? remark : [remark]
       note.remark = remarks

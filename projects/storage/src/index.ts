@@ -1,3 +1,5 @@
 export * from './config'
 export * from './Diligence'
 export * from './apis'
+export * from './domain/GroupSequence'
+export * from './domain/Note'

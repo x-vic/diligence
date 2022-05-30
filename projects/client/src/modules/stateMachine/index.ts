@@ -1,5 +1,5 @@
 import { assign, createMachine } from 'xstate'
-import { Note } from '../../domain/Note'
+import { Note } from 'storage/src/domain/Note'
 
 interface Context {
   tasks: number[]

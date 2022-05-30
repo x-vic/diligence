@@ -1,7 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { Group } from '../domain/Group'
 import { download, readFileAsText, textToFile } from '../utils'
-
 import { ToastTypes, useDialog, useToast } from 'vicui'
 import 'vicui/dist/index.css'
 import { addGroup, exportAll, recover } from 'storage'
@@ -17,12 +15,12 @@ export default function Admin() {
     if (!file) return
     setGroupFile(file)
     const res = await readFileAsText(file)
-    const group = Group.fromJson(file.name.split('.')?.[0] ?? 'unnamed', res)
+    // const group = Group.fromJson(file.name.split('.')?.[0] ?? 'unnamed', res)
     // 手动清空 value 值，否则第二次不会出发 change 事件
     e.target.value = null
     setGroupFile(null)
     // todo 存入本地数据库 1. 给组生成 id； 2. 生成笔记； 3. 建立 组 ID ==> [笔记 id] 的关联
-    addGroup(group.name, group.notes)
+    addGroup(file.name.split('.')?.[0] ?? 'unnamed', JSON.parse(res))
   }
 
   // 导出数据为 JSON 文件

@@ -1,4 +1,5 @@
-import { db, IGroups, INotes } from './Diligence'
+import { db } from './Diligence'
+import { INote, Note } from './domain/Note'
 
 // 获取最新可用的 ID
 export const getLastId = async (tableName: string): Promise<number> => {
@@ -11,22 +12,21 @@ export const getLastId = async (tableName: string): Promise<number> => {
   return res?.id ? res.id + 1 : 0
 }
 
-type GetGroupIds = number | ((ids: number[]) => number[])
-export const updateGroupsOrder = async (getGroupIds: GetGroupIds) => {
+type GetGroupNames = string | ((names: string[]) => string[])
+export const updateGroupsOrder = async (getGroupNames: GetGroupNames) => {
   // 获得之前的排序
   let res = await db.groupSequence.toCollection().first()
   // 第一次走这段逻辑
   if (!res)
     res = {
-      id: 0,
       name: 'groupSequences',
       sequence: [],
     }
   let sequence = res.sequence
-  if (typeof getGroupIds === 'number') {
-    sequence.push(getGroupIds)
+  if (typeof getGroupNames === 'string') {
+    sequence.push(getGroupNames)
   } else {
-    sequence = getGroupIds(sequence)
+    sequence = getGroupNames(sequence)
   }
   res.sequence = Array.from(new Set(sequence))
   // 更新 sequence
@@ -34,33 +34,19 @@ export const updateGroupsOrder = async (getGroupIds: GetGroupIds) => {
 }
 
 // 添加一个笔记组
-export const addGroup = async (groupName: string, notes: Partial<INotes>[]) => {
-  const groupId = await getLastId('groups')
-  let noteId = await getLastId('notes')
-  console.log('groupId, noteId', groupId, noteId)
-
-  const group = { id: groupId, name: groupName, notes: [] }
-  const newNotes = []
-  // 生成笔记
-  for (const note of notes) {
-    if (!note.id) note.id = noteId
-    newNotes.push(note)
-    group.notes.push(noteId)
-    noteId++
-  }
-  // 入库
-  return Promise.all([
-    db.notes.bulkPut(newNotes),
-    db.groups.put(group),
-    updateGroupsOrder(groupId),
-  ])
+export const addGroup = async (groupName: string, notes: Partial<INote>[]) => {
+  const newNotes = notes.map((note) => ({
+    ...Note.fromJsonObj(note),
+    groupName,
+  }))
+  await db.notes.bulkPut(newNotes)
+  await updateGroupsOrder(groupName)
 }
 
 // 导出全部数据
 export const exportAll = async () => {
   const res = {
     groupSequence: await db.groupSequence.toCollection().toArray(),
-    groups: await db.groups.toCollection().toArray(),
     notes: await db.notes.toCollection().toArray(),
   }
   return res
@@ -68,27 +54,29 @@ export const exportAll = async () => {
 
 // 恢复全部数据
 export const recover = async (data) => {
-  const { groupSequence, groups, notes } = data
+  const { groupSequence, notes } = data
   // 删除所有数据
   await Promise.all([
     db.groupSequence.toCollection().delete(),
-    db.groups.toCollection().delete(),
     db.notes.toCollection().delete(),
   ])
   // 添加数据
   return Promise.all([
-    db.notes.bulkPut(notes),
-    db.groups.bulkPut(groups),
+    db.notes.bulkPut(notes.map((note) => Note.fromJsonObj(note))),
     db.groupSequence.bulkPut(groupSequence),
   ])
 }
+
+// 获取当日任（获取 n 个任务）
+export const getTasks = async (n: number) => {}
 ;(async function run() {
   // const res = await getLastId('groupSequences')
   // const res = await updateGroupsOrder(7)
-  // const res = await addGroup('hehe', [
-  //   { title: '西方现代思想2', content: '我的天啊2。。。。。。。。。。。。。' },
-  //   { title: '经济学讲义2', content: '我的地啊2。。。。。。。。。。。。。' },
+  // const res = await addGroup('haha', [
+  //   { title: '7', content: '7' },
+  //   { title: '8', content: '8' },
   // ])
+  // console.log('resres', res)
   // const res = await exportAll()
   // const res = await recover({
   //   groupSequence: [
@@ -118,7 +106,6 @@ export const recover = async (data) => {
   //     },
   //   ],
   // })
-  // console.log('resres', res)
-})
+})()
 
 // updateGroupsOrder((ids) => ids)
