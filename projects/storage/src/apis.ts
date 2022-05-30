@@ -1,5 +1,5 @@
 import { db } from './Diligence'
-import { INote, Note } from './domain/Note'
+import { Bool, INote, Note } from './domain/Note'
 
 // 获取最新可用的 ID
 export const getLastId = async (tableName: string): Promise<number> => {
@@ -68,13 +68,30 @@ export const recover = async (data) => {
 }
 
 // 获取当日任（获取 n 个任务）
-export const getTasks = async (n: number) => {}
+// 1. 一旦被标记一次错误，掌握程度直接变为 0
+// 2. 根据**上次记忆时间**和**上次是第几次**记忆，调整优先级（上次记忆的时间越短，越需要尽快记忆）
+// 3. 一旦被标记为简单，则变成完成状态
+// 4. 记录错误的次数
+export const getTasks = async (review: number = 0, add: number) => {
+  // 找到需要复习的记录
+  // 进行中的 & 未完成的  + 上次记忆的时间 & 第几次 & 错误的次数
+  const res = await db.notes.where({
+    progress: Bool.false,
+    completed: Bool.true,
+  })
+  // .orderBy()
+  // .sortBy('errorTimes', )
+  console.log('hehe', res)
+
+  // 找到新增的记录
+  // 还未开始 & 未完成  +  按照组别排序来找
+}
 ;(async function run() {
+  getTasks(1, 2)
   // const res = await getLastId('groupSequences')
   // const res = await updateGroupsOrder(7)
   // const res = await addGroup('haha', [
-  //   { title: '7', content: '7' },
-  //   { title: '8', content: '8' },
+  //   { title: '666', content: '666', completed: 1 },
   // ])
   // console.log('resres', res)
   // const res = await exportAll()

@@ -11,6 +11,7 @@
     // 下面这两个选项用来解决打包 async 函数出错的问题
     "baseUrl": ".",
     "moduleResolution": "node",
+    "target": "ESNext",
     "paths": {
       "tslib": ["node_modules/tslib/tslib.d.ts"]
     },

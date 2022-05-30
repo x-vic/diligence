@@ -1,7 +1,12 @@
+export enum Bool {
+  false = 0,
+  true = 1,
+}
+
 export interface INote {
-  completed: boolean // 是否为简单知识
+  completed: Bool // 是否为简单知识
   degree: number // 掌握程度
-  progress: boolean // 是否在进行中
+  progress: Bool // 是否在进行中
   created: number // 创建时间
   remark: string[] // 标记 / 评论
   lastReview: number // 上次复习的时间
@@ -15,9 +20,9 @@ export interface INote {
 
 export class Note implements INote {
   // public id: number
-  public completed: boolean = false // 是否为简单知识
+  public completed: Bool = Bool.false // 是否为简单知识
   public degree: number = 0 // 掌握程度
-  public progress: boolean = false // 是否在进行中
+  public progress: Bool = Bool.false // 是否在进行中
   public created: number = Date.now() // 创建时间
   public lastReview: number // 上次复习时间
   public lastTimes: number // 上次是第几次

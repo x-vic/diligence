@@ -20,6 +20,6 @@
     "typescript": "^4.6.4"
   },
   "dependencies": {
-    "dexie": "^2.0.4"
+    "dexie": "^3.2.2"
   }
 }
