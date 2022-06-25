@@ -13,6 +13,7 @@ export const getLastId = async (tableName: string): Promise<number> => {
 }
 
 type GetGroupNames = string | ((names: string[]) => string[])
+
 export const updateGroupsOrder = async (getGroupNames: GetGroupNames) => {
   // 获得之前的排序
   let res = await db.groupSequence.toCollection().first()
@@ -75,10 +76,14 @@ export const recover = async (data) => {
 export const getTasks = async (review: number = 0, add: number) => {
   // 找到需要复习的记录
   // 进行中的 & 未完成的  + 上次记忆的时间 & 第几次 & 错误的次数
-  const res = await db.notes.where({
-    progress: Bool.false,
-    completed: Bool.true,
-  })
+  const res = await db.notes
+    // .where('[progress+completed]')
+    // .equals([Bool.false, Bool.true])
+    .where({
+      progress: Bool.false,
+      completed: Bool.true,
+    })
+    .toArray()
   // .orderBy()
   // .sortBy('errorTimes', )
   console.log('hehe', res)

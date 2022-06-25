@@ -10,20 +10,23 @@ export enum DialogTypes {
 
 export interface DialogProps {
   title: string
-  text: string
+  content: string | JSX.Element
   hide: MouseEventHandler<HTMLSpanElement>
   resolveRef: Ref<Function>
   closeOnClick?: boolean
+  beforeConfirm?: Function
 }
 
 export default function Dialog({
   title,
-  text,
+  content,
   resolveRef,
   closeOnClick = false,
   hide,
+  beforeConfirm,
 }: DialogProps) {
-  const handleConfirm = useCallback((e) => {
+  const handleConfirm = useCallback(async (e) => {
+    if (!(await beforeConfirm())) return
     // @ts-ignore
     resolveRef.current()
     hide(e)
@@ -41,7 +44,7 @@ export default function Dialog({
             &times;
           </span>
         </div>
-        <div className="vic_dialog-body">{text}</div>
+        <div className="vic_dialog-body">{content}</div>
         <footer className="vic_dialog-footer">
           <button onClick={handleConfirm} className="vic_dialog-footer-confirm">
             确定

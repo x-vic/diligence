@@ -7,9 +7,10 @@ export default Dialog
 
 export interface DialogParams {
   title: string
-  text: string
+  content: string | JSX.Element
   closeOnClick?: boolean
   hide?: MouseEventHandler<HTMLDivElement>
+  beforeConfirm?: Function
 }
 
 const DialogContainer = document.createElement('div')

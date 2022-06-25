@@ -1,14 +1,27 @@
-import React, { useCallback, useState } from 'react'
+import React, {
+  ChangeEventHandler,
+  FormEvent,
+  FormEventHandler,
+  useCallback,
+  useRef,
+  useState,
+} from 'react'
 import { download, readFileAsText, textToFile } from '../utils'
 import { ToastTypes, useDialog, useToast } from 'vicui'
 import 'vicui/dist/index.css'
 import { addGroup, exportAll, recover } from 'storage'
+import { useModel } from '../hooks'
 
 export default function Admin() {
   const [groupFile, setGroupFile] = useState(null)
   const [recoverFile, setRecoverFile] = useState(null)
+  const groupName = useRef('')
   const { show: showToast } = useToast()
   const { show: showDialog } = useDialog()
+  const { show: showUpload } = useDialog()
+
+  const handleChange: ChangeEventHandler<HTMLInputElement> = (e) =>
+    (groupName.current = e.target.value)
 
   const handleAddGroup = async (e) => {
     const file: File = e.target.files[0]
@@ -19,8 +32,37 @@ export default function Admin() {
     // 手动清空 value 值，否则第二次不会出发 change 事件
     e.target.value = null
     setGroupFile(null)
-    // todo 存入本地数据库 1. 给组生成 id； 2. 生成笔记； 3. 建立 组 ID ==> [笔记 id] 的关联
-    addGroup(file.name.split('.')?.[0] ?? 'unnamed', JSON.parse(res))
+    showUpload({
+      title: '请输入笔记本组名字',
+      // 如果用常规方式处理 input，会导致外部组件更新，而 input 没法更新，所以用刀 ref
+      content: (
+        <input
+          defaultValue={groupName.current}
+          className="w-[90%] border-[1px] rounded-[6px]"
+          onChange={handleChange}
+        />
+      ),
+      beforeConfirm: () => {
+        if (!groupName.current) {
+          showToast({
+            type: ToastTypes.warning,
+            text: '请先输入笔记本名字',
+            duration: 500,
+          })
+        }
+        return !!groupName.current
+      },
+    })
+      .then(() => {
+        console.log('4444', groupName.current)
+        // 存入本地数据库 1. 给组生成 id； 2. 生成笔记； 3. 建立 组 ID ==> [笔记 id] 的关联
+        addGroup(file.name.split('.')?.[0] ?? 'unnamed', JSON.parse(res))
+      })
+      .catch(() => {})
+      .finally(() => {
+        // 还原输入框的值
+        groupName.current = ''
+      })
   }
 
   // 导出数据为 JSON 文件
@@ -34,7 +76,7 @@ export default function Admin() {
   const handleRecover = async (e) => {
     await showDialog({
       title: '恢复数据',
-      text: '恢复数据之前会先清空现有数据，您确定吗？',
+      content: '恢复数据之前会先清空现有数据，您确定吗？',
     })
     const file: File = e.target.files[0]
     if (!file) return
