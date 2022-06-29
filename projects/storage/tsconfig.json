@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
     "esModuleInterop": true,
+    // 让 ts 能够识别默认导出
+    "allowSyntheticDefaultImports": true,
     "lib": ["ESNext", "DOM"],
     "module": "ESNext",
     "sourceMap": true,

@@ -1,5 +1,6 @@
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import ts from 'rollup-plugin-typescript2'
+import commonjs from '@rollup/plugin-commonjs'
 import path from 'path'
 
 export default {
@@ -19,6 +20,7 @@ export default {
     nodeResolve({
       extensions: ['.js', '.ts'],
     }),
+    commonjs({ sourceMap: true }),
     ts({
       tsconfig: path.resolve(__dirname, 'tsconfig.json'),
     }),
