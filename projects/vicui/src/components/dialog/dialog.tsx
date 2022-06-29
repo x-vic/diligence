@@ -23,7 +23,7 @@ export default function Dialog({
   resolveRef,
   closeOnClick = false,
   hide,
-  beforeConfirm,
+  beforeConfirm = () => true,
 }: DialogProps) {
   const handleConfirm = useCallback(async (e) => {
     if (!(await beforeConfirm())) return

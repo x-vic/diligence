@@ -55,7 +55,7 @@ export class Note implements INote {
     lastTimes && (note.created = lastTimes)
     errorTimes && (note.created = errorTimes)
     created && (note.created = created)
-    groupName && (note.created = created)
+    groupName && (note.groupName = groupName)
     if (remark) {
       const remarks = Array.isArray(remark) ? remark : [remark]
       note.remark = remarks

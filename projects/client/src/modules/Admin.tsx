@@ -54,9 +54,12 @@ export default function Admin() {
       },
     })
       .then(() => {
-        console.log('4444', groupName.current)
+        // console.log('4444', groupName.current)
         // 存入本地数据库 1. 给组生成 id； 2. 生成笔记； 3. 建立 组 ID ==> [笔记 id] 的关联
-        addGroup(file.name.split('.')?.[0] ?? 'unnamed', JSON.parse(res))
+        addGroup(
+          groupName.current ?? file.name.split('.')?.[0] ?? 'unnamed',
+          JSON.parse(res)
+        )
       })
       .catch(() => {})
       .finally(() => {

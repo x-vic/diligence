@@ -20,7 +20,7 @@ export class Diligence extends Dexie {
       groupSequence: '&name',
       // groups: 'id, &name',
       notes:
-        '&title, &content, groupName, progress, completed, degree, errorTimes, *tags, *remark',
+        '&title, &content, groupName, progress, completed, degree, errorTimes, *tags, *remark, [groupName+progress], [lastReview+lastTimes+errorTimes]',
       // , *tags, *remark, completed, degree, progress, created, lastReview, lastTimes, errorTimes
     })
   }
