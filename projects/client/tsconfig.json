@@ -1,7 +1,16 @@
 {
   "compilerOptions": {
+    "target": "ES2015",
+    "downlevelIteration": true,
     "esModuleInterop": true,
-    "lib": ["ESNext", "DOM"],
-    "jsx": "react"
-  }
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "jsx": "react",
+    // 下面两个选项用来解决打包 async 报错的问题
+    "baseUrl": ".",
+    "moduleResolution": "node",
+    "paths": {
+      "tslib": ["node_modules/tslib/tslib.d.ts"]
+    }
+  },
+  "include": ["src/*"]
 }

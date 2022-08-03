@@ -10,8 +10,9 @@ export interface IGroups {
 
 export class Diligence extends Dexie {
   groupSequence!: Dexie.Table<IGroupSequence, number>
-  groups!: Dexie.Table<IGroups, number>
+  // groups!: Dexie.Table<IGroups, number>
   notes!: Dexie.Table<INote, number>
+  persiet!: Dexie.Table<Object, string>
 
   constructor() {
     super('diligence')
@@ -22,6 +23,7 @@ export class Diligence extends Dexie {
       notes:
         '&title, &content, groupName, progress, completed, degree, errorTimes, *tags, *remark, [groupName+progress], [lastReview+lastTimes+errorTimes]',
       // , *tags, *remark, completed, degree, progress, created, lastReview, lastTimes, errorTimes
+      persiet: '&date',
     })
   }
 }

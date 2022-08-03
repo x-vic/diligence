@@ -1,3 +1,5 @@
+import { Progress } from './GroupSequence'
+
 export enum Bool {
   false = 0,
   true = 1,
@@ -6,7 +8,7 @@ export enum Bool {
 export interface INote {
   completed: Bool // 是否为简单知识
   degree: number // 掌握程度
-  progress: Bool // 是否在进行中
+  progress: Progress // 是否在进行中
   created: number // 创建时间
   remark: string[] // 标记 / 评论
   lastReview: number // 上次复习的时间
@@ -22,10 +24,10 @@ export class Note implements INote {
   // public id: number
   public completed: Bool = Bool.false // 是否为简单知识
   public degree: number = 0 // 掌握程度
-  public progress: Bool = Bool.false // 是否在进行中
+  public progress: Progress = Progress.idle // 是否在进行中
   public created: number = Date.now() // 创建时间
-  public lastReview: number // 上次复习时间
-  public lastTimes: number // 上次是第几次
+  public lastReview: number = 0 // 上次复习时间
+  public lastTimes: number = 0 // 上次是第几次
   public errorTimes: number = 0
   public groupName: string
   public remark: string[] = [] // 标记 / 评论
@@ -52,7 +54,7 @@ export class Note implements INote {
     degree && (note.degree = degree)
     progress && (note.progress = progress)
     lastReview && (note.lastReview = lastReview)
-    lastTimes && (note.created = lastTimes)
+    lastTimes && (note.lastTimes = lastTimes)
     errorTimes && (note.created = errorTimes)
     created && (note.created = created)
     groupName && (note.groupName = groupName)

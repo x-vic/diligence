@@ -1,4 +1,5 @@
-prefer-workspace-packages: true
+prefer-workspace-packages: false
+auto-install-peers: true
 packages:
   - 'packages/*'
   - 'projects/*'

@@ -13,6 +13,7 @@ importers:
       '@pmmmwh/react-refresh-webpack-plugin': ^0.5.6
       '@types/react': ^18.0.9
       '@types/react-dom': ^18.0.4
+      '@xstate/immer': 0.3.1
       '@xstate/react': ^3.0.0
       autoprefixer: ^10.4.7
       babel-loader: ^8.2.5
@@ -22,6 +23,7 @@ importers:
       css-loader: ^6.7.1
       fork-ts-checker-webpack-plugin: ^7.2.11
       html-webpack-plugin: ^5.5.0
+      immer: 9.0.15
       postcss: ^8.4.14
       postcss-loader: ^7.0.0
       react: ^18.1.0
@@ -39,8 +41,10 @@ importers:
       webpack-dev-server: ^4.9.0
       xstate: ^4.32.1
     dependencies:
+      '@xstate/immer': 0.3.1_immer@9.0.15+xstate@4.32.1
       '@xstate/react': 3.0.0_ds25dbl6ssacjrt3wvmav227dq
       classnames: 2.3.1
+      immer: 9.0.15
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
       react-router-dom: 6.3.0_ef5jwxihqo6n7gxfmzogljlgcm
@@ -1925,6 +1929,16 @@ packages:
       webpack-dev-server: 4.9.0_smhu6mcfcg7aivfsuosc335k3u
     dev: true
 
+  /@xstate/immer/0.3.1_immer@9.0.15+xstate@4.32.1:
+    resolution: {integrity: sha512-YE+KY08IjEEmXo6XKKpeSGW4j9LfcXw+5JVixLLUO3fWQ3M95joWJ40VtGzx0w0zQSzoCNk8NgfvwWBGSbIaTA==}
+    peerDependencies:
+      immer: ^9.0.6
+      xstate: ^4.29.0
+    dependencies:
+      immer: 9.0.15
+      xstate: 4.32.1
+    dev: false
+
   /@xstate/react/3.0.0_ds25dbl6ssacjrt3wvmav227dq:
     resolution: {integrity: sha512-KHSCfwtb8gZ7QH2luihvmKYI+0lcdHQOmGNRUxUEs4zVgaJCyd8csCEmwPsudpliLdUmyxX2pzUBojFkINpotw==}
     peerDependencies:
@@ -3408,6 +3422,10 @@ packages:
     dependencies:
       postcss: 8.4.14
     dev: true
+
+  /immer/9.0.15:
+    resolution: {integrity: sha512-2eB/sswms9AEUSkOm4SbV5Y7Vmt/bKRwByd52jfLkW4OLYeaTP3EEiJ9agqU0O/tq6Dk62Zfj+TJSqfm1rLVGQ==}
+    dev: false
 
   /immutable/4.1.0:
     resolution: {integrity: sha512-oNkuqVTA8jqG1Q6c+UglTOD1xhC1BtjKI7XkCXRkZHrN5m18/XsnUp8Q89GkQO/z+0WjonSvl0FLhDYftp46nQ==}

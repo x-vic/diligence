@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { db } from './Diligence'
 import { IGroup, Progress } from './domain/GroupSequence'
 import { Bool, INote, Note } from './domain/Note'
@@ -73,21 +74,54 @@ export const recover = async (data) => {
   ])
 }
 
+// 持久化今日状态
+export const persiet = async (ctx: Object) => {
+  const date = dayjs().startOf('day').format('YYYY-MM-DD')
+  db.persiet.bulkPut([{ date, ctx }])
+}
+
+export const getPersiet = async () => {
+  const date = dayjs().startOf('day').format('YYYY-MM-DD')
+  // const all = await db.persiet.toArray()
+  // console.log('all', all)
+
+  const ctx = await db.persiet.get(date)
+  if (ctx) return ctx
+  throw `无效 ctx: ${ctx}`
+}
+
+// 更新一条笔记
+export const updataNote = async (note: INote | INote[]) => {
+  const notes = Array.isArray(note) ? note : [note]
+  return await db.notes.bulkPut(notes)
+}
+
+export interface ITasks {
+  review: INote[]
+  add: INote[]
+  all: INote[]
+  length: number
+}
+
 // 获取当日任（获取 n 个任务）
 // 1. 一旦被标记一次错误，掌握程度直接变为 0
 // 2. 根据**上次记忆时间**和**上次是第几次**记忆，调整优先级（上次记忆的时间越短，越需要尽快记忆）
 // 3. 一旦被标记为简单，则变成完成状态
 // 4. 记录错误的次数
+// 5. 今日取过的不能再重复取（上次访问的时间不是今天）
 export const getTasks = async (
   review: number = 0,
   add: number,
   total = review + add
-) => {
+): Promise<ITasks> => {
   const res = {
     review: [],
     add: [],
+    get all() {
+      return [...this.review, ...this.add]
+    },
     get length() {
-      return this.review.length + this.add.length
+      return this.all.length
     },
   }
   // 找到需要复习的记录
@@ -95,7 +129,14 @@ export const getTasks = async (
   const reviewNotes = await db.notes
     .where({
       progress: Progress.underway,
+      completed: Bool.false,
     })
+    // 今天取过的不再取
+    .filter(
+      (note) =>
+        dayjs(note.lastReview).startOf('day').format !==
+        dayjs().startOf('day').format
+    )
     .sortBy('[lastReview+lastTimes+errorTimes]')
   // .limit()
 
@@ -121,10 +162,23 @@ export const getTasks = async (
     const groupName = groups.sequence[i].name
     const notes = await db.notes
       .where({ groupName, progress: Progress.idle })
+      // 今天取过的不再取
+      .filter(
+        (note) =>
+          dayjs(note.lastReview).startOf('day').format() !==
+          dayjs().startOf('day').format()
+      )
       .limit(total - res.length)
       .toArray()
     res.add.push(...notes)
   }
+  // console.log(
+  //   '333333',
+
+  //   dayjs(res.all[0].lastReview).startOf('day').format(),
+  //   dayjs(Date.now()).startOf('day').format(),
+  //   dayjs(0).startOf('day').format()
+  // )
   console.log('tasks', res)
 
   return res
@@ -133,7 +187,7 @@ export const getTasks = async (
   // 还未开始 & 未完成  +  按照组别排序来找
 }
 ;(async function run() {
-  getTasks(5, 12)
+  // getTasks(5, 12)
   // const res = await getLastId('groupSequences')
   // const res = await updateGroupsOrder(7)
   // const res = await addGroup('haha', [
