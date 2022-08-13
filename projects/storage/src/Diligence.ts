@@ -1,6 +1,6 @@
 import Dexie from 'dexie'
 import { IGroupSequence } from './domain/GroupSequence'
-import { INote } from './domain/Note'
+import { Bool, INote } from './domain/Note'
 
 export interface IGroups {
   id: number
@@ -8,22 +8,28 @@ export interface IGroups {
   notes: number[]
 }
 
+export interface IRecord {
+  date: string
+  completed: Bool
+  tasks: any[]
+}
+
 export class Diligence extends Dexie {
   groupSequence!: Dexie.Table<IGroupSequence, number>
   // groups!: Dexie.Table<IGroups, number>
   notes!: Dexie.Table<INote, number>
-  persiet!: Dexie.Table<Object, string>
+  records!: Dexie.Table<Object, string>
 
   constructor() {
     super('diligence')
     var db = this
-    this.version(1).stores({
+    this.version(4).stores({
       groupSequence: '&name',
       // groups: 'id, &name',
       notes:
-        '&title, &content, groupName, progress, completed, degree, errorTimes, *tags, *remark, [groupName+progress], [lastReview+lastTimes+errorTimes]',
+        '&title, &content, groupName, progress, completed, degree, errorTimes, tags, remark, [groupName+progress], [groupName+completed], [lastReview+lastTimes+errorTimes], [progress+completed]',
       // , *tags, *remark, completed, degree, progress, created, lastReview, lastTimes, errorTimes
-      persiet: '&date',
+      records: '&date, completed, tasks',
     })
   }
 }

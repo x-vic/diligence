@@ -1,7 +1,7 @@
 import { useActor } from '@xstate/react'
 import classNames from 'classnames'
 import React, { useEffect } from 'react'
-import { createTaskMachine, TaskEvent } from 'src/stateMachine/task.machine'
+import { createTaskMachine, TaskEvent } from '../fsm/task.machine'
 import { StateFrom } from 'xstate'
 import { TaskProps } from './Task'
 
@@ -13,7 +13,7 @@ export default function Answer({ sequence, index }: TaskProps) {
   } = task
 
   useEffect(() => {
-    console.log('task', task)
+    // console.log('task', task)
   })
   const [state, send] = useActor<
     TaskEvent,

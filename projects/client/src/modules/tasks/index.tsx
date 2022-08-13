@@ -1,29 +1,16 @@
 import React, { useEffect, useMemo } from 'react'
 import { useMachine } from '@xstate/react'
-import { getTasks, Progress } from 'storage'
-import { ITask, tasksMachine } from '../../stateMachine/tasks.machine'
+import { getTasks, Progress, getOneDayRecords, getRecords } from 'storage'
+import { ITask, tasksMachine } from './fsm/tasks.machine'
 import Task from './components/Task'
 import ReviewList from './components/ReviewList'
+import Completed from './components/Completed'
 import MyProgress from '../../components/progress'
 
-const persistedTasksMachine = tasksMachine.withConfig(
-  {
-    actions: {
-      persist: (context) => {
-        // 任务信息存储到本地
-        // try {
-        //   localStorage.setItem('todos-xstate', JSON.stringify(context.todos));
-        // } catch (e) {
-        //   console.error(e);
-        // }
-      },
-    },
-  }
-  // 这里本来可以自动初始化，但是好像不支持异步取数据放到 ctx 中，所以作罢
-)
-
 export default function () {
-  const [state, send] = useMachine(persistedTasksMachine, { devTools: true })
+  const [state, send, interpreter] = useMachine(tasksMachine, {
+    devTools: true,
+  })
   const { jobs, sequence, tasks, jobCursor, records, pastTime } = state.context
   // useEffect(() => {
   //   getTasks(10, 6).then(res => {
@@ -33,6 +20,9 @@ export default function () {
   //   })
   // }, [])
   useEffect(() => {
+    console.log('6666', state)
+    // getOneDayRecords()
+    getRecords()
     // console.log('records', records)
     // console.log('state', state.value)
     // console.clear()
@@ -43,7 +33,7 @@ export default function () {
     // console.log('records.map(i => sequence[i])', records)
     // console.log('state', state)
     // console.log('jobs, sequence, tasks, jobCursor', jobs, sequence, tasks, jobCursor)
-  })
+  }, [])
 
   const isReady = ['ready', 'lookback'].some(state.matches)
 
@@ -77,19 +67,19 @@ export default function () {
       <section className="w-full h-full flex flex-col items-center">
         <header className="w-[100%] flex py-[8px] items-center justify-around">
           <div className="flex flex-col items-center justify-around">
-            <span>今日复习</span>
+            <span className="text-gray-500">复习</span>
             <span>
               {reviewDone} / {reviewTotal}
             </span>
           </div>
           <div className="flex flex-col items-center justify-around">
-            <span>今日新知识</span>
+            <span className="text-gray-500">新知</span>
             <span>
               {addDone} / {addTotal}
             </span>
           </div>
           <div className="flex flex-col items-center justify-around">
-            <span>精进时长</span>
+            <span className="text-gray-500">时长</span>
             <span>{(pastTime / 1000 / 60) | 0}min</span>
           </div>
         </header>
@@ -104,7 +94,8 @@ export default function () {
           />
         )}
         {state.matches('completed') && (
-          <h1 onClick={() => send('ONEMORETIME')}>完成啦！</h1>
+          // <h1 onClick={() => send('ONEMORETIME')}>完成啦！</h1>
+          <Completed interpreter={interpreter} />
         )}
         {/* <div className="flex-1 text-[24px]">
           {

@@ -1,7 +1,7 @@
 import { useActor } from '@xstate/react'
 import classNames from 'classnames'
 import React, { useMemo } from 'react'
-import { createTaskMachine, TaskEvent } from 'src/stateMachine/task.machine'
+import { createTaskMachine, TaskEvent } from '../fsm/task.machine'
 import { StateFrom } from 'xstate'
 import { TaskProps } from './Task'
 

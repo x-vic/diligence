@@ -1,10 +1,10 @@
 import React from 'react'
 import Question from './Question'
 import Answer from './Answer'
-import { ITask } from 'src/stateMachine/tasks.machine'
+import { ITask } from '../fsm/tasks.machine'
 import { useActor } from '@xstate/react'
 import { StateFrom } from 'xstate'
-import { createTaskMachine, TaskEvent } from 'src/stateMachine/task.machine'
+import { createTaskMachine, TaskEvent } from '../fsm/task.machine'
 
 export interface TaskProps {
   sequence: ITask[]

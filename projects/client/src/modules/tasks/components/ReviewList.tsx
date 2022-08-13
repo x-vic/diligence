@@ -1,5 +1,5 @@
 import React from 'react'
-import { ITask } from 'src/stateMachine/tasks.machine'
+import { ITask } from '../fsm/tasks.machine'
 
 export default function ReviewList({
   list,

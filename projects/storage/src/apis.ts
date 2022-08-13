@@ -74,22 +74,6 @@ export const recover = async (data) => {
   ])
 }
 
-// 持久化今日状态
-export const persiet = async (ctx: Object) => {
-  const date = dayjs().startOf('day').format('YYYY-MM-DD')
-  db.persiet.bulkPut([{ date, ctx }])
-}
-
-export const getPersiet = async () => {
-  const date = dayjs().startOf('day').format('YYYY-MM-DD')
-  // const all = await db.persiet.toArray()
-  // console.log('all', all)
-
-  const ctx = await db.persiet.get(date)
-  if (ctx) return ctx
-  throw `无效 ctx: ${ctx}`
-}
-
 // 更新一条笔记
 export const updataNote = async (note: INote | INote[]) => {
   const notes = Array.isArray(note) ? note : [note]
@@ -129,7 +113,7 @@ export const getTasks = async (
   const reviewNotes = await db.notes
     .where({
       progress: Progress.underway,
-      completed: Bool.false,
+      // completed: Bool.false,
     })
     // 今天取过的不再取
     .filter(

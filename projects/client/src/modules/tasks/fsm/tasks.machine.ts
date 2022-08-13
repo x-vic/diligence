@@ -5,8 +5,10 @@ import {
   ITasks,
   Note,
   persiet,
+  setRecord,
   Progress,
   updataNote,
+  Bool,
 } from 'storage'
 import { createTaskMachine } from './task.machine'
 import { assign } from '@xstate/immer'
@@ -17,6 +19,7 @@ export type ITask = {
   progress: Progress // 今日是否已完成
   leftTimes: number // 剩余次数
   isError: boolean // 展示详情的时候判断有没有错
+  oneTimesPass: boolean // 是否一次通过
   ref: ActorRef<any>
 }
 
@@ -47,7 +50,7 @@ type GenEvents<E extends Record<keyof Events, Record<string, any>>> = {
   } & E[K]
 }
 
-type TasksEvents = GenEvents<Events>
+export type TasksEvents = GenEvents<Events>
 type TaskEvent<K extends keyof Events> = TasksEvents[K]
 type Send<K extends keyof Events> = (eventName: K, payload: Events[K]) => void
 
@@ -66,7 +69,7 @@ const initialContext = {
   pastTime: 0, // 学习时长
 }
 
-type TasksContext = typeof initialContext
+export type TasksContext = typeof initialContext
 
 export const tasksMachine = createMachine(
   {
@@ -123,6 +126,7 @@ export const tasksMachine = createMachine(
                     progress: Progress.idle,
                     isError: false,
                     leftTimes: 1, // 一开始，需要记忆的次数为 1 次
+                    oneTimesPass: true,
                     ref: spawn(createTaskMachine(i + prevlen)),
                   }))
                 )
@@ -202,6 +206,7 @@ export const tasksMachine = createMachine(
             }
             // 处理 note
             task.note.lastReview = Date.now()
+            task.note.progress = Progress.underway
             task.note.lastTimes++
           }),
           'updataNote',
@@ -223,8 +228,10 @@ export const tasksMachine = createMachine(
             const task = ctx.sequence[index]
             task.leftTimes = 3
             task.isError = true
+            task.oneTimesPass = false
             // 处理 note
             task.note.lastReview = Date.now()
+            task.note.completed = Bool.false
             task.note.lastTimes++
             task.note.errorTimes++
           }),
@@ -265,7 +272,8 @@ export const tasksMachine = createMachine(
             const task = ctx.sequence[index]
             task.progress = Progress.fulfill
             task.isError = false
-            task.note.progress = 1
+            task.note.completed = Bool.true
+            task.note.progress = Progress.fulfill
           }),
           'updataNote',
           'persiet',
@@ -292,15 +300,16 @@ export const tasksMachine = createMachine(
           ...ctx,
           sequence: ctx.sequence.map(({ ref, ...rest }) => rest),
         })
+        setRecord(ctx)
       },
       // 从本地恢复数据
       recoverTasks: assign<TasksContext>(
-        (ctx, { data }: PromiseEvent<{ date: string; ctx: TasksContext }>) => {
+        (ctx, { data }: PromiseEvent<TasksContext>) => {
           // actor 不能存储到 indexDb 中，所以要重新创建
-          data.ctx.sequence.forEach((task, i) => {
+          data.sequence.forEach((task, i) => {
             task.ref = spawn(createTaskMachine(i))
           })
-          Object.assign(ctx, data.ctx)
+          Object.assign(ctx, data)
         }
       ),
     },
