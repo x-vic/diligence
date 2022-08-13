@@ -118,8 +118,8 @@ export const getTasks = async (
     // 今天取过的不再取
     .filter(
       (note) =>
-        dayjs(note.lastReview).startOf('day').format !==
-        dayjs().startOf('day').format
+        dayjs(note.lastReview).startOf('day').format() !==
+        dayjs().startOf('day').format()
     )
     .sortBy('[lastReview+lastTimes+errorTimes]')
   // .limit()

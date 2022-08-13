@@ -46,19 +46,23 @@ export default function () {
       if (sequence[i].progress === Progress.fulfill) done++
     }
     return [done, total]
-  }, [jobCursor])
+  }, [sequence])
   const [addDone, addTotal] = useMemo(() => {
     const total = tasks.add.length
     if (total === 0) return [0, 0]
     let done = 0
-    for (let i = tasks.review.length; i < total; i++) {
+    for (
+      let i = tasks.review.length;
+      i < tasks.review.length + tasks.add.length;
+      i++
+    ) {
       if (sequence[i].progress === Progress.fulfill) done++
     }
     return [done, total]
   }, [sequence])
   const [done, total] = useMemo(
     () => [reviewDone + addDone, reviewTotal + addTotal],
-    [sequence]
+    [sequence, jobCursor]
   )
 
   return (

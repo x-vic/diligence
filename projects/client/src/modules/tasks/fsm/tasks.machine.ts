@@ -218,10 +218,10 @@ export const tasksMachine = createMachine(
           assign<TasksContext, TaskEvent<'TASK.TIP'>>((ctx, { index }) => {
             const jobs = ctx.jobs
             let cursor = ctx.jobCursor
-            let needTimes = 4 - ctx.sequence[index].leftTimes
+            let needTimes = 3 - ctx.sequence[index].leftTimes
             while (needTimes--) {
               // 将要插入的位置
-              cursor += 4
+              cursor += 3
               const position = Math.min(jobs.length, cursor)
               jobs.splice(position, 0, index)
             }
