@@ -22,6 +22,11 @@ module.exports = {
     allowCollectingMemory: true,
   },
   stats: isDev ? 'summary' : { assets: true },
+  resolve: {
+    alias: {
+      src: resolve(__dirname, './src'),
+    },
+  },
   // 监控包体积，过大报错
   // performance: {
   //   hints: 'error',

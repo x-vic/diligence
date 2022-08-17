@@ -1,5 +1,8 @@
-import React from 'react'
+import classNames from 'classnames'
+import React, { useMemo } from 'react'
+import { groupBy } from '../../../utils'
 import { ITask } from '../fsm/tasks.machine'
+import TaskItem from './TaskItem'
 
 export default function ReviewList({
   list,
@@ -8,15 +11,16 @@ export default function ReviewList({
   list: ITask[]
   nextGroup: Function
 }) {
+  const { failTasks, passTasks } = useMemo(
+    () => groupBy(list, (task) => (task.isError ? 'failTasks' : 'passTasks')),
+    [list]
+  )
+  // console.log('failTasks, passTasks', failTasks, passTasks)
   return (
-    <>
-      <ul className="mt-[12px] w-[100%] flex flex-1 flex-col">
-        {list.map(({ note }) => (
-          <li key={note.title}>
-            {note.title}
-            <br />
-            {note.content}
-          </li>
+    <main className="w-11/12 h-[100%] flex flex-col">
+      <ul className="mt-[16px] w-[100%] flex flex-1 flex-col">
+        {list.map(({ isError, note }) => (
+          <TaskItem note={note} isError={isError} />
         ))}
       </ul>
       <button
@@ -26,6 +30,6 @@ export default function ReviewList({
       >
         下一组
       </button>
-    </>
+    </main>
   )
 }

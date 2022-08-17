@@ -320,7 +320,7 @@ export const tasksMachine = createMachine(
         (ctx.jobCursor >= ctx.jobs.length || ctx.records.length >= 2),
       isOver: (ctx, { data }) => {
         // 当从本地恢复数据的时候，也需要判断是否已完成
-        if (data?.ctx) return data.ctx.jobCursor >= data.ctx.jobs.length
+        if (data?.jobCursor) return data.jobCursor >= data.jobs.length
         return ctx.jobCursor >= ctx.jobs.length
       },
     },

@@ -40,3 +40,18 @@ export async function download(link: string) {
   DownloadLink.click() // 触发a标签的click事件
   document.body.removeChild(DownloadLink)
 }
+
+export function groupBy<T extends Record<string, any>>(
+  list: T[],
+  rule: (T) => string | number
+): Record<string, T[]> {
+  return list.reduce((prev, curr) => {
+    const key = rule(curr)
+    if (prev[key]?.length) {
+      prev[key].push(curr)
+    } else {
+      prev[key] = [curr]
+    }
+    return prev
+  }, {})
+}

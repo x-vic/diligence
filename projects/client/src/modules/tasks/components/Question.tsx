@@ -16,6 +16,7 @@ export default function Question({ sequence, index }: TaskProps) {
   >(task.ref)
 
   const interval = useMemo(() => {
+    if (lastReview === 0) return 0
     return Math.round((Date.now() - lastReview) / (24 * 60 * 60 * 1000))
   }, [])
   return (
