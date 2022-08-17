@@ -24,7 +24,7 @@ export default function ReviewList({
         ))}
       </ul>
       <button
-        className="sticky bottom-0 w-[96%] h-[40px] leading-[40px] text-center bg-yellow-200 rounded-[20px] mb-[20px]"
+        className="sticky bottom-0 w-[100%] h-[40px] leading-[40px] text-center bg-yellow-200 rounded-[20px] mb-[20px]"
         // @ts-ignore
         onClick={nextGroup}
       >

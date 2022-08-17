@@ -24,12 +24,14 @@ importers:
       fork-ts-checker-webpack-plugin: ^7.2.11
       html-webpack-plugin: ^5.5.0
       immer: 9.0.15
+      observable-hooks: ^4.2.0
       postcss: ^8.4.14
       postcss-loader: ^7.0.0
       react: ^18.1.0
       react-dom: ^18.1.0
       react-refresh: ^0.13.0
       react-router-dom: ^6.3.0
+      rxjs: ^7.5.6
       storage: workspace:^1.0.0
       style-loader: ^3.3.1
       tailwindcss: ^3.0.24
@@ -45,9 +47,11 @@ importers:
       '@xstate/react': 3.0.0_ds25dbl6ssacjrt3wvmav227dq
       classnames: 2.3.1
       immer: 9.0.15
+      observable-hooks: 4.2.0_cfm2nttcvu4bxqktitf2lidkmi
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
       react-router-dom: 6.3.0_ef5jwxihqo6n7gxfmzogljlgcm
+      rxjs: 7.5.6
       storage: link:../storage
       vicui: link:../vicui
       xstate: 4.32.1
@@ -3957,6 +3961,18 @@ packages:
       object-keys: 1.1.1
     dev: true
 
+  /observable-hooks/4.2.0_cfm2nttcvu4bxqktitf2lidkmi:
+    resolution: {integrity: sha512-bGjfGQI9vXrOIf1zAc3dmMqIXSqGQM+MLYOSQuqTzgP/8ptyDn9Gsm3tXXnohHkL7byyzHFc0/zuWyydUjtAFg==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+      rxjs: '>=6.0.0'
+    dependencies:
+      react: 18.1.0
+      react-dom: 18.1.0_react@18.1.0
+      rxjs: 7.5.6
+    dev: false
+
   /obuf/1.1.2:
     resolution: {integrity: sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg==}
     dev: true
@@ -4945,6 +4961,12 @@ packages:
       queue-microtask: 1.2.3
     dev: true
 
+  /rxjs/7.5.6:
+    resolution: {integrity: sha512-dnyv2/YsXhnm461G+R/Pe5bWP41Nm6LBXEYWI6eiFP4fiwx6WRI/CD0zbdVAudd9xwLEF2IDcKXLHit0FYjUzw==}
+    dependencies:
+      tslib: 2.4.0
+    dev: false
+
   /safe-buffer/5.1.2:
     resolution: {integrity: sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==}
     dev: true
@@ -5403,7 +5425,6 @@ packages:
 
   /tslib/2.4.0:
     resolution: {integrity: sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==}
-    dev: true
 
   /type-fest/2.12.2:
     resolution: {integrity: sha512-qt6ylCGpLjZ7AaODxbpyBZSs9fCI9SkL3Z9q2oxMBQhs/uyY+VD8jHA8ULCGmWQJlBgqvO3EJeAngOHD8zQCrQ==}
