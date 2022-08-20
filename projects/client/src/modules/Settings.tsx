@@ -21,20 +21,7 @@ import {
   throttle,
   throttleTime,
 } from 'rxjs'
-
-const configs = [
-  { review: 10, add: 5 },
-  { review: 20, add: 10 },
-  { review: 40, add: 20 },
-  { review: 60, add: 30 },
-  { review: 80, add: 40 },
-  { review: 100, add: 50 },
-  { review: 120, add: 60 },
-  { review: 140, add: 70 },
-  { review: 160, add: 80 },
-  { review: 180, add: 90 },
-  { review: 200, add: 100 },
-]
+import { taskConfig } from '../config'
 
 export default function Settings() {
   const ulRef = useRef(null)
@@ -60,7 +47,7 @@ export default function Settings() {
           map(({ touches: [{ pageY }] }) => pageY - y),
           // 防止越界
           map((y) => {
-            const min = -40 * (configs.length - 6)
+            const min = -40 * (taskConfig.length - 6)
             const max = 40 * 5
             if (y > max) return max
             if (y < min) return min
@@ -80,7 +67,7 @@ export default function Settings() {
     // 计算属于哪个 item
     const index = (-finalY + 200) / (400 / 10)
     localStorage.setItem('optionIndex', String(index))
-    console.log('555', index, finalY)
+    console.log('555', taskConfig[index])
   })
   return (
     <main className="p-[12px]">
@@ -95,7 +82,7 @@ export default function Settings() {
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >
-          {configs.map((item) => (
+          {taskConfig.map((item) => (
             <li
               className="flex px-[16px] justify-center items-center h-[40px] w-[100%]"
               key={item.add}

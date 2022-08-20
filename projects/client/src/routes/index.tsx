@@ -4,6 +4,7 @@ import { App } from '../App'
 import Admin from '../modules/Admin'
 import Settings from '../modules/Settings'
 import Task from '../modules/tasks'
+import Calendar from '../modules/calendar'
 
 export function Index() {
   return (
@@ -30,6 +31,10 @@ function RouterTree() {
     {
       path: 'settings',
       element: <Settings />,
+    },
+    {
+      path: 'calendar',
+      element: <Calendar />,
     },
     {
       path: '*',

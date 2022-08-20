@@ -20,7 +20,7 @@ export default function ReviewList({
     <main className="w-11/12 h-[100%] flex flex-col">
       <ul className="mt-[16px] w-[100%] flex flex-1 flex-col">
         {list.map(({ isError, note }) => (
-          <TaskItem note={note} isError={isError} />
+          <TaskItem note={note} isError={isError} key={note.title} />
         ))}
       </ul>
       <button

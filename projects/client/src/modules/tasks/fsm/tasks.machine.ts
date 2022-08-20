@@ -13,6 +13,7 @@ import {
 import { createTaskMachine } from './task.machine'
 import { assign } from '@xstate/immer'
 import { getTasks } from 'storage'
+import { getTaskConfig } from '../../../config'
 
 export type ITask = {
   note: INote
@@ -110,7 +111,10 @@ export const tasksMachine = createMachine(
       },
       loading: {
         invoke: {
-          src: () => getTasks(1, 1),
+          src: () => {
+            const { review, add } = getTaskConfig()
+            return getTasks(1, 1)
+          },
           onDone: {
             target: 'ready',
             // 将页面发射过来的数据放到 tasks 中
